@@ -6,50 +6,30 @@ CREATE TABLE usuarios (
   usuarios_id INT NOT NULL AUTO_INCREMENT,
   email VARCHAR(45) NOT NULL,
   senha VARCHAR(45) NOT NULL,
-  apelido CHAR NOT NULL,
-  usuarioscol VARCHAR(45) NOT NULL,
+  apelido VARCHAR(255) NOT NULL,
   PRIMARY KEY (usuarios_id));
 
 CREATE TABLE pagamentos (
   pagamento_id INT NOT NULL AUTO_INCREMENT,
-  forma_pagamento CHAR NOT NULL,
+  forma_pagamento VARCHAR(45) NOT NULL,
   pagamento_data DATETIME NOT NULL,
-  reembolso DATETIME NOT NULL,
+  reembolso BOOLEAN NOT NULL,
   PRIMARY KEY (pagamento_id));
 
 CREATE TABLE jogos (
   jogos_id INT NOT NULL AUTO_INCREMENT,
   faixa_etaria INT NOT NULL,
   avaliacao FLOAT NOT NULL,
-  usuarios_usuarios_id INT NOT NULL,
-  jogo_nome CHAR NOT NULL,
+  jogo_nome VARCHAR(255) NOT NULL,
   preco FLOAT NOT NULL,
-  pagamentos_pagamento_id INT NOT NULL,
-  PRIMARY KEY (jogos_id, usuarios_usuarios_id, pagamentos_pagamento_id),
-  FOREIGN KEY (pagamentos_pagamento_id)
-  REFERENCES pagamentos (pagamento_id));
-
-CREATE TABLE forum (
-  forum_id INT NOT NULL AUTO_INCREMENT,
-  envio_comentario LONGTEXT NOT NULL,
-  avalia_comentario INT NOT NULL,
-  PRIMARY KEY (forum_id));
-
-CREATE TABLE usuarios_has_forum (
-  usuarios_usuarios_id INT NOT NULL,
-  forum_forum_id INT NOT NULL,
-  PRIMARY KEY (usuarios_usuarios_id, forum_forum_id),
-  FOREIGN KEY (usuarios_usuarios_id)
-  REFERENCES usuarios (usuarios_id), 
-  FOREIGN KEY (forum_forum_id)
-  REFERENCES forum (forum_id));
+  PRIMARY KEY (jogos_id));
 
 CREATE TABLE desenvolvedora (
   desenvolvedora_id INT NOT NULL AUTO_INCREMENT,
-  biblioteca_jogos INT NOT NULL,
-  desenvolvedora_nome CHAR(999) NOT NULL,
-  desenvolvedora_regiao CHAR(999) NOT NULL,
-  premiacoes VARCHAR(45) NOT NULL,
+  biblioteca_jogos VARCHAR(255) NOT NULL,
+  desenvolvedora_nome VARCHAR(255) NOT NULL,
+  desenvolvedora_regiao	VARCHAR(255) NOT NULL,
+  premiacoes VARCHAR(45),
   PRIMARY KEY (desenvolvedora_id));
 
 CREATE TABLE jogos_has_desenvolvedora (
@@ -57,9 +37,9 @@ CREATE TABLE jogos_has_desenvolvedora (
   jogos_usuarios_usuarios_id INT NOT NULL,
   desenvolvedora_desenvolvedora_id INT NOT NULL,
   plataformajogo VARCHAR(45) NOT NULL,
-  PRIMARY KEY (jogos_jogos_id, jogos_usuarios_usuarios_id, desenvolvedora_desenvolvedora_id),
-  FOREIGN KEY (jogos_jogos_id, jogos_usuarios_usuarios_id)
-  REFERENCES jogos (jogos_id, usuarios_usuarios_id),
+  PRIMARY KEY (jogos_jogos_id, desenvolvedora_desenvolvedora_id),
+  FOREIGN KEY (jogos_jogos_id)
+  REFERENCES jogos (jogos_id),
   FOREIGN KEY (desenvolvedora_desenvolvedora_id)
   REFERENCES desenvolvedora (desenvolvedora_id));
 
@@ -67,9 +47,9 @@ CREATE TABLE jogos_has_usuarios (
   jogos_jogos_id INT NOT NULL,
   jogos_usuarios_usuarios_id INT NOT NULL,
   usuarios_usuarios_id INT NOT NULL,
-  PRIMARY KEY (jogos_jogos_id, jogos_usuarios_usuarios_id, usuarios_usuarios_id),
-  FOREIGN KEY (jogos_jogos_id, jogos_usuarios_usuarios_id)
-  REFERENCES jogos (jogos_id , usuarios_usuarios_id),
+  PRIMARY KEY (jogos_jogos_id, usuarios_usuarios_id),
+  FOREIGN KEY (jogos_jogos_id)
+  REFERENCES jogos (jogos_id),
   FOREIGN KEY (usuarios_usuarios_id)
   REFERENCES usuarios (usuarios_id));
   
@@ -100,7 +80,7 @@ insert into jogos (faixa_etaria, avaliacao, preco, jogo_nome) values ('14', 0.2,
 	insert into jogos (faixa_etaria, avaliacao, preco, jogo_nome) values ('10', 3.1, 367.96, 'Matsoft');
 	insert into jogos (faixa_etaria, avaliacao, preco, jogo_nome) values ('12', 1.4, 190.21, 'Y-Solowarm');
 	insert into jogos (faixa_etaria, avaliacao, preco, jogo_nome) values ('14', 4.5, 380.75, 'Sonsing');
-	insert into jogos (faixa_etaria, avaliacao, preco, jogo_nome) values ('L', 3.7, 93.57, 'Flexidy');
+	insert into jogos (faixa_etaria, avaliacao, preco, jogo_nome) values ('0', 3.7, 93.57, 'Flexidy');
 	insert into jogos (faixa_etaria, avaliacao, preco, jogo_nome) values ('14', 2.2, 152.04, 'Andalax');
 	insert into jogos (faixa_etaria, avaliacao, preco, jogo_nome) values ('12', 4.8, 118.27, 'Z-Solowarm');
 	insert into jogos (faixa_etaria, avaliacao, preco, jogo_nome) values ('10', 1.2, 420.73, 'Bytecard');
@@ -173,9 +153,9 @@ select * from pagamentos order by pagamento_data ASC;
     
 select reembolso from pagamentos where pagamento_id = 65182;
 	select apelido from usuarios where usuarios_id = 377126;
-	select regiao from desenvolvedora where desenvolvedora_id = 2112;
+	select desenvolvedora_regiao from desenvolvedora where desenvolvedora_id = 2112;
 	select premiacoes from desenvolvedora where desenvolvedora_id = 772;
-	select avaliacao from jogos where jogo_id = 4732;
+	select avaliacao from jogos where jogos_id = 4732;
     
 select * from jogos inner join desenvolvedora on jogos.jogos_id = desenvolvedora.desenvolvedora_id;
 	select jogos.jogos_id from jogos inner join desenvolvedora on jogos.jogos_id = desenvolvedora.desenvolvedora_id;
