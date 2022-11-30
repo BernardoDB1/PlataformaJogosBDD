@@ -22,7 +22,12 @@ CREATE TABLE jogos (
   avaliacao FLOAT NOT NULL,
   jogo_nome VARCHAR(255) NOT NULL,
   preco FLOAT NOT NULL,
+  pagamentos_pagamento_id INT NOT NULL,
+	FOREIGN KEY (pagamentos_pagamento_id)
+	REFERENCES pagamentos(pagamento_id),
   PRIMARY KEY (jogos_id));
+  
+  
 
 CREATE TABLE desenvolvedora (
   desenvolvedora_id INT NOT NULL AUTO_INCREMENT,
